@@ -1,0 +1,36 @@
+<script type="text/javascript">
+    RED.nodes.registerType('ce-list',{
+        category: 'controlled english',
+        color: '#fdf0c2',
+        defaults: {
+            name: {value:""},
+            cetype: {value:"concepts"}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "ce-store-list.ico",
+        label: function() {
+            return this.name||"list";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="ce-list">
+    <div class="form-row">
+      <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+      <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-cetype"><i class="fa fa-cog"></i> Type</label>
+        <select type="text" id="node-input-cetype" style="width:70%;">
+          <option value="concepts">Concepts</option>
+          <option value="instances">Instances</option>
+          <option value="sources">Sources</option>
+          <option value="models">Models</option>
+        </select>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="ce-list">
+    <p>A simple node to allow listing of different ce-store types</p>
+</script>

@@ -1,0 +1,26 @@
+<script type="text/javascript">
+    RED.nodes.registerType('ce-check',{
+        category: 'controlled english',
+        color: '#87a980',
+        defaults: {
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:0,
+        icon: "ce-store-check.ico",
+        label: function() {
+            return this.name||"check";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="ce-check">
+    <div class="form-row">
+      <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+      <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="ce-check">
+    <p>Similar to the standard 'debug' node, this node simply checks the JSON returned from a ce-store API and summarises the contents</p>
+</script>

@@ -1,0 +1,46 @@
+<script type="text/javascript">
+    RED.nodes.registerType('ce-setup',{
+        category: 'controlled english',
+        color: '#c7e9c0',
+        defaults: {
+            name: {value:""},
+            server: {value:"http://localhost:8080/ce-store"},
+            store: {value:"DEFAULT"}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "ce-store-setup.ico",
+        label: function() {
+            var label = "setup";
+
+            if (this.name) {
+              label = this.name;
+            } else {
+              if (this.server) {
+                label = this.store + " (" + this.server +  ")";
+              }
+            }
+
+            return label;
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="ce-setup">
+    <div class="form-row">
+      <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+      <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-cogs"></i> Server</label>
+        <input type="text" id="node-input-server" placeholder="Server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-store"><i class="fa fa-cog"></i> Store</label>
+        <input type="text" id="node-input-store" placeholder="Store">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="ce-setup">
+    <p>A convenience node to set the CE server and CE store</p>
+</script>

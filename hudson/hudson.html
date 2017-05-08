@@ -1,0 +1,26 @@
+<script type="text/javascript">
+    RED.nodes.registerType('ce-hudson',{
+        category: 'controlled english',
+        color: '#3fadb5',
+        defaults: {
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "ce-store-hudson.ico",
+        label: function() {
+            return this.name||"hudson";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="ce-hudson">
+    <div class="form-row">
+      <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+      <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="ce-hudson">
+    <p>A simple node to allow an item to be got from a ce-store</p>
+</script>

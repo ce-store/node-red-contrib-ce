@@ -1,0 +1,40 @@
+<script type="text/javascript">
+    RED.nodes.registerType('ce-parms',{
+        category: 'controlled english',
+        color: '#fdf0c2',
+        defaults: {
+            name: {value:""},
+            format: {value:"json"},
+            showstats: {value:true}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "ce-store-parms.ico",
+        label: function() {
+            return this.name||"parms";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="ce-parms">
+    <div class="form-row">
+      <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+      <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-format"><i class="fa fa-cog"></i> Format</label>
+        <select type="text" id="node-input-format" style="width:70%;">
+          <option value="json">JSON</option>
+          <option value="ce">CE</option>
+        </select>
+    </div>
+    <div class="form-row">
+    <input style="width: 30px" type="checkbox" id="node-input-showstats">
+    <label for="node-input-showstats"><i class="fa fa-cog"></i> Show stats</label>
+    </div>
+    <hr align="middle"/>
+</script>
+
+<script type="text/x-red" data-help-name="ce-parms">
+    <p>A helper node for specifying various ce-store API parameters</p>
+</script>

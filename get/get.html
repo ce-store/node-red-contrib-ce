@@ -1,0 +1,39 @@
+<script type="text/javascript">
+    RED.nodes.registerType('ce-get',{
+        category: 'controlled english',
+        color: '#fdd0a2',
+        defaults: {
+            name: {value:""},
+            cetype: {value:"concept"},
+            ceid: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "ce-store-get.ico",
+        label: function() {
+            return this.name||"get";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="ce-get">
+    <div class="form-row">
+      <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+      <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-cetype"><i class="fa fa-cog"></i> CE type</label>
+        <select type="text" id="node-input-cetype" style="width:70%;">
+          <option value="concepts">Concept</option>
+          <option value="instances">Instance</option>
+        </select>
+    </div>
+    <div class="form-row">
+      <label for="node-input-ceid"><i class="icon-tag"></i> CE id</label>
+      <input type="text" id="node-input-ceid" placeholder="CE id">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="ce-get">
+    <p>A simple node to allow an item to be got from a ce-store</p>
+</script>

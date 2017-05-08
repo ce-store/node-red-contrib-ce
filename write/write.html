@@ -1,0 +1,86 @@
+<script type="text/javascript">
+    RED.nodes.registerType('ce-write',{
+        category: 'controlled english',
+        color: '#e6e0f8',
+        defaults: {
+            name: {value:""},
+            action: {value:"save"},
+            cesource: {value:""},
+            cetext: {value: "there is a person named 'Fred'."}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "ce-store-write.ico",
+        label: function() {
+            return this.name||"write";
+        },
+        inputLabels: "CE",
+        outputLabels: ["JSON"],
+        oneditprepare: function() {
+            var that = this;
+            this.editor = RED.editor.createEditor({
+                id: 'node-input-cetext-editor',
+                mode: 'ace/mode/text',
+                value: $("#node-input-cetext").val()
+            });
+            this.editor.focus();
+        },
+        oneditsave: function() {
+            $("#node-input-cetext").val(this.editor.getValue());
+            delete this.editor;
+        },
+        oneditresize: function(size) {
+            var rows = $("#dialog-form>div:not(.node-text-editor-row)");
+            var height = $("#dialog-form").height();
+            for (var i=0;i<rows.size();i++) {
+                height -= $(rows[i]).outerHeight(true);
+            }
+            var editorRow = $("#dialog-form>div.node-text-editor-row");
+            height -= (parseInt(editorRow.css("marginTop"))+parseInt(editorRow.css("marginBottom")));
+            $(".node-text-editor").css("height",height+"px");
+            this.editor.resize();
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="ce-write">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-action"><i class="fa fa-cog"></i> Action</label>
+        <select type="text" id="node-input-action" style="width:70%;">
+          <option value="save">Save</option>
+          <option value="validate">Validate</option>
+          <option value="execute">Execute</option>
+        </select>
+        <div class="form-tips"><b>Save</b> to save, <b>Validate</b> to validate but not save, or <b>Execute</b> to run a query/rule without saving</div>
+    </div>
+    <div class="form-row">
+        <label for="node-input-cesource"><i class="icon-tag"></i> CE source</label>
+        <input type="text" id="node-input-cesource" placeholder="CE source">
+    </div>
+    <div class="form-row" style="margin-bottom: 0px;">
+        <label for="node-input-cetext"><i class="fa fa-file-text-o"></i> CE text</label>
+        <input type="hidden" id="node-input-cetext" autofocus="autofocus">
+    </div>
+    <div class="form-row node-text-editor-row">
+        <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-cetext-editor" ></div>
+    </div>
+    <div class="form-tips">
+      You can have as many CE sentences as you like.<br/>
+      <b>Tip:</b> Don&apos;t forget to escape quotes and backslashes.
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="ce-write">
+    <p>A simple node to write CE sentences to a CE store</p>
+    <h3>Outputs</h3>
+        <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">string | buffer</span>
+        </dt>
+    <h3>Details</h3>
+    <p>Some more information about the node.</p>
+</script>
