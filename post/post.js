@@ -51,7 +51,54 @@ module.exports = function(RED) {
                 else if (config.cetype === 'queries') {
                     ce = '[' + config.queryname + ']\n';
                 }
-                ce += config.cetext;
+
+                var cetext = config.cetext;
+                var regex = /msg./gi, result, indices = [];
+                while ( (result = regex.exec(cetext)) ) {
+                    indices.push(result.index);
+                }
+
+                var replacements = [];
+                for (i = 0; i < indices.length; i++) {
+                    var msgIndex = indices[i];
+                    var delIndex = Math.min(
+                        cetext.indexOf(" ", msgIndex),
+                        cetext.indexOf("\n", msgIndex)
+                    );
+                    var paramString;
+                    // Case 1: variable followed by space or new line
+                    if (delIndex > -1) {
+                        // Case 1*: variable at end of sentence mid-text
+                        if (cetext.charAt(delIndex - 1) === ".") {
+                            delIndex -= 1;
+                        }
+                        paramString = cetext.substring(msgIndex + 4, delIndex);
+                    }
+                    // Case 2: variable is last word in whole text
+                    else if (cetext.charAt(cetext.length - 1) === ".") {
+                        delIndex = cetext.length - 1;
+                        paramString = cetext.substring(msgIndex + 4, delIndex);
+                    }
+                    if (paramString) {
+                        var params = paramString.split(".");
+                        var result = msg;
+                        for (j = 0; j < params.length; j++) {
+                            result = result[params[j]];
+                        }
+                        replacements.push({
+                                "variable": "msg." + paramString,
+                                "val": result.toString()
+                            }
+                        );
+                    }
+                }
+
+                for (r = 0; r < replacements.length; r++) {
+                    var rep = replacements[r];
+                    cetext = cetext.replace(rep.variable, rep.val);
+                }
+
+                ce += cetext;
 
                 var params = {};
                 if (config.action) {
