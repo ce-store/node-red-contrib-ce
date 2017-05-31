@@ -1,0 +1,129 @@
+<script type="text/x-red" data-template-name="ce-post">
+    <div class="form-row">
+      <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+      <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-cetype"><i class="fa fa-cog"></i> CE type</label>
+        <select type="text" id="node-input-cetype" style="width:70%;">
+          <option value="concepts">concept</option>
+          <option value="instances">instance</option>
+          <option value="queries">query</option>
+          <option value="rules">rule</option>
+        </select>
+    </div>
+    <div class="form-row">
+      <label for="node-input-ceid"><i class="icon-tag"></i> CE id</label>
+      <input type="text" id="node-input-ceid" placeholder="CE id">
+    </div>
+    <div class="form-row" id='rulename-container' visibility="hidden">
+      <label for="node-input-rulename"><i class="icon-tag"></i> Rule name</label>
+      <input type="text" id="node-input-rulename" placeholder="Rule name">
+    </div>
+    <div class="form-row" id='queryname-container' visibility="hidden">
+      <label for="node-input-queryname"><i class="icon-tag"></i> Query name</label>
+      <input type="text" id="node-input-queryname" placeholder="Query name">
+    </div>
+    <div class="form-row" style="margin-bottom: 0px;">
+        <label for="node-input-cetext" style="width: 100% !important;"><i class="fa fa-comments"></i> CE text<span data-i18n="comment.label.body"></span></label>
+        <input type="hidden" id="node-input-cetext" autofocus="autofocus" placeholder="conceptualise...">
+    </div>
+    <div class="form-row node-text-editor-row">
+        <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-cetext-editor"></div>
+    </div>
+    <div id='param-container'>
+        <div class="form-row">
+            <label for="node-input-action" style="width:50%;"><i class="fa fa-cog"></i> Action</label>
+            <select type="text" id="node-input-action" style="width:40%;">
+              <option value="save">save</option>
+              <option value="validate">validate</option>
+              <option value="parse">parse</option>
+              <option value="execute">execute</option>
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="node-input-returninstances" style="width:50%;"><i class="fa fa-cog"></i> Return instances</label>
+            <select type="text" id="node-input-returninstances" style="width:40%;">
+              <option value="true">true</option>
+              <option value="false">false</option>
+            </select>
+        </div>
+        <div class="form-row">
+          <label for="node-input-steps" style="width:50%;"><i class="icon-tag"></i> Steps</label>
+          <input type="text" id="node-input-steps" placeholder="Steps" style="width:40%">
+        </div>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="ce-post">
+    <p>A simple node to allow an item to be got from a ce-store</p>
+</script>
+
+
+<script type="text/javascript">
+    RED.nodes.registerType('ce-post',{
+        category: 'controlled english',
+        color: '#fdd0a2',
+        defaults: {
+            name: {value:""},
+            cetype: {value:""},
+            ceid: {value:""},
+            rulename: {value:""},
+            queryname: {value:""},
+            cetext: {value:""},
+            action: {value:""},
+            returninstances: {value:""},
+            steps: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "ce-store-post.ico",
+        label: function() {
+            return this.name||"";
+        },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        oneditprepare: function() {
+            var that = this;
+            this.editor = RED.editor.createEditor({
+                id: 'node-input-cetext-editor',
+                mode: 'ace/mode/markdown',
+                value: $("#node-input-cetext").val()
+            });
+            this.editor.focus();
+
+            $("#node-input-steps").spinner({min:0});
+
+            $("#node-input-cetype").change(function() {
+                if (this.value === 'queries') {
+                    $("#queryname-container").show();
+                    $("#rulename-container").hide();
+                }
+                else if (this.value === 'rules') {
+                    $("#rulename-container").show();
+                    $("#queryname-container").hide();
+                }
+                else {
+                    $("#rulename-container").hide();
+                    $("#queryname-container").hide();
+                }
+            });
+        },
+        oneditsave: function() {
+            $("#node-input-cetext").val(this.editor.getValue());
+            delete this.editor;
+        },
+        oneditresize: function(size) {
+            var rows = $("#dialog-form>div:not(.node-text-editor-row)");
+            var height = $("#dialog-form").height();
+            for (var i=0;i<rows.size();i++) {
+                height -= $(rows[i]).outerHeight(true);
+            }
+            var editorRow = $("#dialog-form>div.node-text-editor-row");
+            height -= (parseInt(editorRow.css("marginTop"))+parseInt(editorRow.css("marginBottom")));
+            $(".node-text-editor").css("height",height+"px");
+            this.editor.resize();
+        }
+    });
+</script>
