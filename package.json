@@ -1,20 +1,26 @@
 {
-    "name"         : "node-red-contrib-ce",
-    "version"      : "0.0.1",
-    "description"  : "Controlled English nodes for node-red",
-    "dependencies": {
-    },
-    "keywords": [ "Controlled English", "CE", "ce-store" ],
-    "node-red"     : {
-        "nodes": {
-            "ce-setup": "setup/setup.js",
-            "ce-parms": "parms/parms.js",
-            "ce-list": "list/list.js",
-            "ce-get": "get/get.js",
-            "ce-write": "write/write.js",
-            "ce-check": "check/check.js",
-            "ce-hudson": "hudson/hudson.js",
-            "ce-example": "example/example.js"
-        }
+  "name": "node-red-contrib-ce",
+  "version": "0.0.1",
+  "description": "Controlled English nodes for node-red",
+  "dependencies": {
+    "request-promise": "^4.2.1"
+  },
+  "keywords": [
+    "Controlled English",
+    "CE",
+    "ce-store"
+  ],
+  "node-red": {
+    "nodes": {
+      "ce-setup": "setup/setup.js",
+      "ce-parms": "parms/parms.js",
+      "ce-list": "list/list.js",
+      "ce-get": "get/get.js",
+      "ce-post": "post/post.js",
+      "ce-write": "write/write.js",
+      "ce-check": "check/check.js",
+      "ce-hudson": "hudson/hudson.js",
+      "ce-example": "example/example.js"
     }
+  }
 }
