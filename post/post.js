@@ -87,9 +87,15 @@ module.exports = function(RED) {
                         for (j = 0; j < params.length; j++) {
                             result = result[params[j]];
                         }
+
+                        if (result) {
+                            result = result.toString();
+                            result = "\"" + result + "\"";
+                        }
+
                         replacements.push({
                                 "variable": "msg." + paramString,
-                                "val": result.toString()
+                                "value": result
                             }
                         );
                     }
@@ -97,7 +103,7 @@ module.exports = function(RED) {
 
                 for (r = 0; r < replacements.length; r++) {
                     var rep = replacements[r];
-                    cetext = cetext.replace(rep.variable, rep.val);
+                    cetext = cetext.replace(rep.variable, rep.value);
                 }
 
                 // Look for instances of {uid}
