@@ -61,10 +61,11 @@ module.exports = function(RED) {
                 var replacements = [];
                 for (i = 0; i < indices.length; i++) {
                     var msgIndex = indices[i];
-                    var delIndex = Math.min(
+                    var delIndex = leastPositiveIndex(
                         cetext.indexOf(" ", msgIndex),
                         cetext.indexOf("\n", msgIndex)
                     );
+
                     var paramString;
                     // Case 1: variable followed by space or new line
                     if (delIndex > -1) {
@@ -79,6 +80,7 @@ module.exports = function(RED) {
                         delIndex = cetext.length - 1;
                         paramString = cetext.substring(msgIndex + 4, delIndex);
                     }
+                    console.log(paramString);
                     if (paramString) {
                         var params = paramString.split(".");
                         var result = msg;
@@ -97,6 +99,11 @@ module.exports = function(RED) {
                     var rep = replacements[r];
                     cetext = cetext.replace(rep.variable, rep.val);
                 }
+
+                // Look for instances of {uid}
+                // If there are two, split sentences into the creation of the object and it's use
+                // Use the creation sentence for the first request...
+                // ... then use the response to gets its name and replace {uid} with it in the use sentence
 
                 ce += cetext;
 
@@ -195,4 +202,15 @@ function getOptions(options) {
     rtn += "&" + key + "=" + options[key];
     }
     return rtn;
+}
+
+function leastPositiveIndex(a, b) {
+    var output;
+    if (a >= 0 && b >= 0) {
+        output = Math.min(a, b);
+    }
+    else {
+        output = Math.max(a, b);
+    }
+    return output;
 }
