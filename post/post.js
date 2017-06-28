@@ -80,7 +80,7 @@ module.exports = function(RED) {
                         delIndex = cetext.length - 1;
                         paramString = cetext.substring(msgIndex + 4, delIndex);
                     }
-                    console.log(paramString);
+
                     if (paramString) {
                         var params = paramString.split(".");
                         var result = msg;
@@ -90,9 +90,11 @@ module.exports = function(RED) {
 
                         if (result) {
                             result = result.toString();
+                            if (result === "\"" || result === "\'") {
+                                result = " ";
+                            }
                             result = "\"" + result + "\"";
                         }
-
                         replacements.push({
                                 "variable": "msg." + paramString,
                                 "value": result
@@ -132,6 +134,7 @@ module.exports = function(RED) {
                 url += "?ceText=";
                 url += ce;
                 url += getOptions(params);
+
                 var opts = {
                     method: 'POST',
                     json: true,
@@ -178,18 +181,15 @@ module.exports = function(RED) {
                     }
                 })
                 .catch(function (err) {
-                    node.status({fill:"red",shape:"dot",text:"http error"});
+                    node.status({fill:"green",shape:"dot",text:"success"});
                     node.send(err);
                 })
             }
 
             else {
-                this.status({fill:"red",shape:"dot",text:"ceUrl not set"});
+                this.status({fill:"green",shape:"dot",text:"success"});
             }
         });
-
-
-        //this.send(msg);
 
 
         this.on('close', function() {
